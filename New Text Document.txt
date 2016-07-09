@@ -1,0 +1,29 @@
+import os
+import xml.etree.ElementTree as ET
+root ="c:\\Users\\ankgoy\\Source\\Repos\\IntentExtraction\\WPFDebugTool\\DebugTool"
+for path, subdirs, files in os.walk(root):
+    for name in files:
+        if name.endswith((".csproj")):
+            full_name = os.path.join(path, name)
+            handle =open(full_name,"r")
+            data = handle.read()
+            print data
+            tree = ET.parse(full_name)
+            root = tree.getroot()
+            print root
+            print tree
+            for child in root:
+                print child.tag
+                if child.tag == "{http://schemas.microsoft.com/developer/msbuild/2003}PropertyGroup":
+                    #print "bla"
+                    for elem in child:
+                    #print "bla"
+                    #k = child.find('WarningLevel')
+                    ##if k!= None:
+                        #print k.text
+                        if elem.tag == "{http://schemas.microsoft.com/developer/msbuild/2003}PlatformTarget":
+                            print elem.text
+            lst = tree.findall('ItemGroup')
+            print len(lst)
+            for item in lst:
+                print item.find('PlatformTarget').text
